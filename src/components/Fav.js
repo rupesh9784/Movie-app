@@ -44,10 +44,10 @@ class Fav extends Component {
             movies2:[...data]
            })
         }else{
-            let fileteredMovies = data.filter((movieObj)=>genreIds[movieObj.genre_ids[0]] == this.state.currgenre)
+            let filteredMovies = data.filter((movieObj)=>genreIds[movieObj.genre_ids[0]] == this.state.currgenre)
             this.setState({
-            movies:[...fileteredMovies],
-            movies2:[...fileteredMovies]
+            movies:[...filteredMovies],
+            movies2:[...filteredMovies]
             })
         }
 
@@ -115,6 +115,16 @@ class Fav extends Component {
             movies2:[...temp]
         })
     }
+    handleDelete = (id)=>{
+      let newArr = [];
+      newArr = this.state.movies.filter((movieObj)=>movieObj.id != id)
+
+      this.setState({
+        movies:[...newArr],
+        movies2:[...newArr]
+      })
+      localStorage.setItem("movies-app",JSON.stringify(newArr))
+    }
 
     render() {
         let genreIds = {28:"Action",12:"Adventure",16:"Animation",35:"Comedy",80:"Crime",99:"Documentary",18:"Drama",10751:"Family",14:"Fantasy",36:"History",27:"Horror",10402:"Music",9648:"Mystery",10749:"Romance",878:"Science Fiction",10770:"TV Movie",53:"Thriller",10752:"War",37:"Western"}
@@ -165,7 +175,7 @@ class Fav extends Component {
                                         <td className="text-center" >{genreIds[movieEle.genre_ids[0]]}</td>
                                         <td className="text-center" >{movieEle.popularity}</td>
                                         <td className="text-center" >{movieEle.vote_average} </td>
-                                        <td className="text-center" ><button type="button" className="btn btn-danger">Delete</button></td>
+                                        <td className="text-center" ><button type="button" className="btn btn-danger" onClick={()=>this.handleDelete(movieEle.id)}>Delete</button></td>
                                     </tr> 
                                     ))
                                 }
@@ -176,8 +186,6 @@ class Fav extends Component {
                         <nav aria-label="Page navigation example">
                             <ul className="pagination">
                                 <li className="page-item"><a className="page-link" href="#">1</a></li>
-                                <li className="page-item"><a className="page-link" href="#">2</a></li>
-                                <li className="page-item"><a className="page-link" href="#">3</a></li>
                             </ul>
                         </nav>
                     </div>
